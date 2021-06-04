@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h4>Explore</h4>
+<hr />
+<div class="col-6 offset-3">
+    <ul class="list-group">
+        {% for u in users %}
+        <li class="list-group-item">
+            {{ u.first_name }} {{ u.last_name }}
+            <span class="float-right">
+                {% if current_user.is_following(u) %}
+                <a href="{{ url_for('main.unfollow', user_id=u.id) }}" class="btn btn-danger">Unfollow</a>
+                {% else %}
+                <a href="{{ url_for('main.follow', user_id=u.id) }}" class="btn btn-info">Follow</a>
+                {% endif %}
+            </span>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock content %}

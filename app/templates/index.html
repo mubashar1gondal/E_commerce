@@ -1,0 +1,33 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+
+    <h4>Home</h4>
+    <hr />
+    <form action="{{ url_for('main.home') }}" method="POST" s>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="form-group">
+                    <input name="body_text" class="form-control" type="text" placeholder="Your blog post here..." />
+                </div>
+            </div>
+            <div class="col-md-2">
+                <input class="btn btn-info" type="submit" value="Post" />
+            </div>
+        </div>
+    </form>
+    <hr />
+    <ul class="list-group">
+        {% for p in posts %}
+        <li class="list-group-item">
+            <p>{{ p.body }}</p>
+            <div>
+                <span>
+                    <cite>&mdash; {{ p.user.first_name }} {{ p.user.last_name }}</cite>
+                    <small class="float-right">{{ moment(p.created_on).fromNow() }}</small>
+                </span>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+{% endblock content %}

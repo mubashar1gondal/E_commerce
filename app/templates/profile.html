@@ -1,0 +1,28 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<h4>Profile</h4>
+<hr />
+<div class="row">
+    <div class="col-6 offset-3">
+        <form action="{{ url_for('main.profile') }}" method="POST">
+            <div class="form-group">
+                <input type="text" class="form-control" name="first_name" placeholder="First Name" value="{{ current_user.first_name }}" />
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="last_name" placeholder="Last Name" value="{{ current_user.last_name }}" />
+            </div>
+            <div class="form-group">
+                <input type="email" class="form-control" name="email" placeholder="Email"  disabled value="{{ current_user.email }}" />
+            </div>
+            <div class="form-group"> 
+                <input type="password" class="form-control" name="password" placeholder="Password" />
+            </div>
+            <div class="form-group"> 
+                <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" />
+            </div>
+            <input type="submit" class="btn btn-info btn-block" value="Update Profile" />
+        </form>
+    </div>
+</div>
+{% endblock content %}

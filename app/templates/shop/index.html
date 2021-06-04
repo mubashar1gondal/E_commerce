@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+    <p>This is the Shop Page.</p>
+    <hr>
+    <div class="card-deck">
+        {% for p in products %}
+        <div class="col-4">
+        <div class="card">
+            <div class="card-header">
+                <h6>
+                    {{ p.name }} 
+                    <span class="float-right">{{ "{:,.2f}".format(p.price) }}</span>
+                </h6>
+            </div>
+            
+            <div class="card-body">
+                <img class="card-img-top" src="https://www.imagehandler.net/preview/?istyle=0000&fmt=jpg&w=2000&h=2000&cmp=100&c=999&img=A1043138000&iset=0108&iindex=0007" alt="{{ p.name }}">
+                <a class="btn btn-success btn-block" href="{{ url_for('shop.add_to_cart', product_id=p.id) }}" style="margin-top: 10px;">Add to cart</a>
+                <p class="card-text" style="margin-top: 10px;">{{ p.description }}</p>
+            </div>
+        </div>
+        </div>
+        {% endfor %}
+    </div>
+
+{% endblock content %}
