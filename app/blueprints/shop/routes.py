@@ -1,5 +1,6 @@
 from flask import render_template, redirect, url_for, current_app as app, flash, request, session, jsonify
 from flask_login.utils import login_required
+from flask_migrate import current
 from . import bp as shop
 import stripe
 from .models import Product, Cart, Order
@@ -74,6 +75,7 @@ def checkout():
             'quantity': product['quantity'],
         }
         l_items.append(product_dict)
+        
     
     try:
         checkout_session = stripe.checkout.Session.create(
@@ -83,13 +85,18 @@ def checkout():
             success_url=app.config.get('YOUR_DOMAIN') + '/shop/success',
             cancel_url=app.config.get('YOUR_DOMAIN') + '/shop/cancel',
         )
+        
+        for i in Cart.query.filter_by(user_id=current_user.id).all():
+            db.session.delete(i)
+        db.session.commit()
+        print(l_items)
         return jsonify({'session_id': checkout_session.id})
     except Exception as e:
         return jsonify(error=str(e)), 403
 
 @shop.route('/success')
 def success():
-    [db.session.delete(c) for c in Cart.query.filter_by(user_id=current_user.id).all()]
-    db.session.commit()
+    # [db.session.delete(c) for c in Cart.query.filter_by(user_id=current_user.id).all()]
+    # db.session.commit()
     flash('All items remove from the cart successfully', 'info')
     return render_template('shop/checkout/success.html')
